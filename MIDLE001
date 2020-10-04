@@ -1,1 +1,106 @@
 
+import java.util.*;
+import java.util.HashMap;
+
+public class Main
+{
+	public static void main(String[] args) throws Exception
+	{
+		LinkedHashMap<Character,Integer> map = new LinkedHashMap<Character,Integer>();
+        Scanner sc = new Scanner(System.in);
+        int n;
+        String str;
+        str = sc.nextLine();
+        ArrayList<Character> list = new ArrayList<Character>();
+        ArrayList<Integer> val = new ArrayList<Integer>();
+    
+        n = Integer.parseInt(sc.next());
+		int arr[] = new int[n];
+		for(int i=0;i<n;i++)
+		    arr[i] = Integer.parseInt(sc.next());
+		    
+		for(int i=0;i<str.length();i++)
+		{
+		    Character ch = str.charAt(i);
+		    map.put(ch,map.getOrDefault(ch,0)+1);
+		}
+		
+		for(Map.Entry<Character,Integer> element : map.entrySet())
+        {
+            System.out.print(element.getKey()+" "+element.getValue()+" ");
+        }
+        
+        for(Map.Entry<Character,Integer> num : map.entrySet())
+        {
+            list.add(num.getKey());
+            val.add(num.getValue());
+        }   
+        
+        for(int freq : arr)
+        {
+            
+            for(Map.Entry<Character,Integer> num : map.entrySet())
+            {
+                int first = 0,second = 0,index = 0;
+                if(num.getValue()==freq)
+                {
+                    for(Map.Entry<Character,Integer> num1 : map.entrySet())
+                    {
+                        if((num1.getValue()==freq)&&(num1.getKey()!=num.getKey()))
+                        {
+                            first=list.indexOf(num.getKey());
+                            second=list.indexOf(num1.getKey());
+                            index = first+1;
+                            for(int i=first+1;i<second;i++)
+                            {
+                                if(map.get(list.get(index))<freq)
+                                {
+                                list.add(0,list.get(index));
+                                list.remove(index+1);
+                                
+                                val.add(0,val.get(index));
+                                val.remove(index+1);
+                                
+                                ++index;
+                                }
+                                else if(map.get(list.get(index))==freq)
+                                {
+                                    continue;
+                                    
+                                }
+                                else
+                                {
+                                    list.add(list.get(index));
+                                    list.remove(index);
+                                
+                                    val.add(val.get(index));
+                                    val.remove(index);
+                                }
+                                //System.out.println("\n"+list+"\n"+val);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            //System.out.println("\n"+list+"\n"+val);
+            
+            map.clear();
+            
+            for(int i=0;i<list.size();i++)
+                map.put(list.get(i),val.get(i));
+        
+            System.out.println();
+            for(Map.Entry<Character,Integer> element : map.entrySet())
+            {
+                System.out.print(element.getKey()+" "+element.getValue()+" ");
+            }
+            
+        }
+        
+		//System.out.println("\n"+map);
+	}
+}
+
+
+
